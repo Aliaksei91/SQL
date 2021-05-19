@@ -108,6 +108,12 @@ FROM Printer
 WHERE price = (SELECT MAX (price) FROM Printer)
 
 
+11)Найдите среднюю скорость ПК.
+------Ответ------
+SELECT AVG (speed)
+FROM PC
+
+
 
 
 
