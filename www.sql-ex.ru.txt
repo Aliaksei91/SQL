@@ -146,6 +146,90 @@ GROUP BY hd
 HAVING COUNT (*) >= 2
 
 
+<<<<<<< HEAD
+=======
+16)Найдите пары моделей PC, имеющих одинаковые скорость и RAM. 
+В результате каждая пара указывается только один раз, т.е. (i,j), но не (j,i), 
+Порядок вывода: модель с большим номером, модель с меньшим номером, скорость и RAM.
+SELECT DISTINCT
+ PC.model,
+ PC2.model,
+ PC.speed,
+ PC.RAM
+FROM PC AS PC
+JOIN PC AS PC2
+ON PC2.speed = PC.speed
+ AND PC2.ram = PC.ram
+ AND PC2.model < PC.model;
+
+
+19)Для каждого производителя, имеющего модели в таблице Laptop,
+найдите средний размер экрана выпускаемых им ПК-блокнотов.
+Вывести: maker, средний размер экрана.
+------Ответ------
+SELECT maker, AVG(screen) Avg_screen
+FROM Laptop
+JOIN Product ON Product.model = Laptop.model
+GROUP BY maker
+
+
+
+20) Найдите производителей, выпускающих по меньшей мере три различных модели ПК. 
+Вывести: Maker, число моделей ПК
+------Ответ------
+SELECT maker, COUNT(model) model
+FROM Product
+WHERE type = 'PC'
+GROUP BY maker
+HAVING Count (model) >= 3
+
+
+21)Найдите максимальную цену ПК, выпускаемых каждым производителем, у которого есть модели в таблице PC.
+Вывести: maker, максимальная цена.
+------Ответ------
+SELECT maker, MAX(price) Max_price
+FROM PC
+JOIN Product ON Product.model = PC.model
+GROUP BY maker
+
+
+22) Для каждого значения скорости ПК, превышающего 600 МГц, 
+определите среднюю цену ПК с такой же скоростью. Вывести: speed, средняя цена.
+------Ответ------
+SELECT speed, AVG(price)Avg_price
+FROM PC
+WHERE speed > 600 
+ AND speed IN (SELECT speed FROM PC WHERE speed >600)
+GROUP BY speed
+
+
+23)Найдите производителей, которые производили бы как ПК
+со скоростью не менее 750 МГц, так и ПК-блокноты со скоростью не менее 750 МГц.
+Вывести: Maker
+------Ответ------
+SELECT maker
+FROM PC
+JOIN Product ON Product.model = PC.model
+WHERE speed >= 750
+INTERSECT
+SELECT maker
+FROM Laptop
+JOIN Product ON Product.model = Laptop.model
+WHERE speed >= 750
+
+
+
+28)Используя таблицу Product, определить количество производителей, выпускающих по одной модели.
+-------Ответ------
+SELECT COUNT (maker) qty
+FROM ( SELECT maker 
+FROM Product
+GROUP BY maker
+HAVING COUNT (*) = 1) this_table
+
+
+
+>>>>>>> SQL
 
 
 
