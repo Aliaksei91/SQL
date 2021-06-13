@@ -172,6 +172,20 @@ WHERE speed < ALL
 (SELECT speed FROM PC)
 
 
+
+18)Найдите производителей самых дешевых цветных принтеров. Вывести: maker, price
+------Ответ------
+SELECT Product.maker AS Maker, price 
+FROM Printer, Product
+WHERE 
+Printer.model = Product.model 
+AND Printer.price = 
+	(SELECT MIN(price) FROM Printer WHERE Printer.color = 'y')
+AND Printer.color = 'y'
+GROUP BY maker, price
+
+
+
 19)Для каждого производителя, имеющего модели в таблице Laptop,
 найдите средний размер экрана выпускаемых им ПК-блокнотов.
 Вывести: maker, средний размер экрана.
@@ -210,6 +224,24 @@ FROM PC
 WHERE speed > 600 
  AND speed IN (SELECT speed FROM PC WHERE speed >600)
 GROUP BY speed
+
+
+24)Перечислите номера моделей любых типов, имеющих самую высокую цену по всей имеющейся в базе данных продукции.
+SELECT model 
+FROM (SELECT model, price FROM PC
+UNION
+SELECT model, price FROM Laptop
+UNION
+SELECT model, price FROM Printer)
+table1
+WHERE price = (SELECT MAX(price) 
+FROM (SELECT model, price FROM PC
+UNION
+SELECT model, price FROM Laptop
+UNION
+SELECT model, price FROM Printer)
+table2
+)
 
 
 23)Найдите производителей, которые производили бы как ПК
