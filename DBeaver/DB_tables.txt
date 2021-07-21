@@ -1,0 +1,153 @@
+-------Product-------
+| product_id | type | maker | country |      model      |  price  | color | warranty |
+|------------|------|-------|---------|-----------------|---------|-------|----------|
+|1           |acou  |YAMAHA |JAPAN    |C40              |100      |brown  |6         |
+|2           |acou  |GIBSON |USA      |J45              |100      |brown  |6         |
+|3           |elec  |YAMAHA |JAPAN    |PAC012           |300      |red    |12        |
+|4           |elec  |GIBSON |USA      |MODERN2019SB     |300      |red    |12        |
+|5           |bass  |GIBSON |USA      |MemphisES-LESBASS|200      |gold   |12        |
+|6           |bass  |YAMAHA |JAPAN    |TRBX304          |200      |white  |12        |
+
+-------Customer-------
+| customer_id | name |    phone     |     email     |
+|-------------|------|--------------|---------------|
+|1            |Ivan  |+3752932112333|test@mail.ru   |
+|2            |Sonya |+3753312332111|test2@mail.ru  |
+
+-------Cart-------
+| customer_id | cart_id |
+|-------------|---------|
+|1            |1        |
+|2            |2        |
+
+-------Cart-product-------
+| product_id | cart_id |
+|------------|---------|
+|1           |1        |
+|2           |2        |
+
+-------Product_photo-------
+| photo_id | product_id |       url      |
+|----------|------------|----------------|
+|1         |1           |guitar.com/acou |
+|2         |2           |guitar.com/acou1|
+|3         |3           |guitar.com/elec |
+|4         |4           |guitar.com/elec1|
+|5         |5           |guitar.com/bass |
+|6         |6           |guitar.com/bass1|
+
+-------Product_summary--------
+| summary_id |     text     | product_id |
+|------------|--------------|------------| 
+|1           |somethingtext1|1           |
+|2           |somethingtext2|2           |
+|3           |somethingtext3|3           |
+|4           |somethingtext4|4           |
+|5           |somethingtext5|5           |
+|6           |somethingtext6|6           |
+
+
+
+
+
+CREATE TABLE Product (
+Product_ID varchar ( 255 ) unique NOT NULL, 
+Type varchar(20) NOT NULL,
+Maker varchar(20) NOT NULL,
+Country varchar(20) NOT NULL,
+Model varchar(20) NOT NULL,
+Price int NOT NULL,
+Color varchar(20) NOT NULL,
+Warranty INT NOT NULL,
+CONSTRAINT Product_PKEY PRIMARY KEY (Product_ID)
+);
+
+INSERT INTO  Product (Product_ID, Type, Maker, Country, Model, Price, Color, Warranty) VALUES ('1', 'acou', 'YAMAHA', 'JAPAN', 'C40', 100, 'brown', 6);
+INSERT INTO  Product (Product_ID, Type, Maker, Country, Model, Price, Color, Warranty) VALUES ('2', 'acou', 'GIBSON', 'USA', 'J45', 100, 'brown', 6); 
+INSERT INTO  Product (Product_ID, Type, Maker, Country, Model, Price, Color, Warranty) VALUES ('3', 'elec', 'YAMAHA', 'JAPAN', 'PAC012', 300, 'red', 12);
+INSERT INTO  Product (Product_ID, Type, Maker, Country, Model, Price, Color, Warranty) VALUES ('4', 'elec', 'GIBSON', 'USA', 'MODERN2019SB', 300, 'red', 12);
+INSERT INTO  Product (Product_ID, Type, Maker, Country, Model, Price, Color, Warranty) VALUES ('5', 'bass', 'GIBSON', 'USA', 'MemphisES-LESBASS', 200, 'gold', 12);
+INSERT INTO  Product (Product_ID, Type, Maker, Country, Model, Price, Color, Warranty) VALUES ('6', 'bass', 'YAMAHA', 'JAPAN', 'TRBX304', 200, 'white', 12);
+
+
+
+
+
+CREATE TABLE Customer (
+Customer_ID varchar ( 255 )  unique NOT NULL, 
+Name varchar ( 20 ) NOT NULL,
+Phone varchar ( 20 ) NOT NULL,
+Email VARCHAR ( 255 ) UNIQUE NOT NULL,
+CONSTRAINT Customer_PKEY PRIMARY KEY (Customer_ID)
+);
+
+INSERT INTO Customer (Customer_ID, Name, Phone, Email) values ('1', 'Ivan', '+3752932112333', 'test@mail.ru');
+INSERT INTO Customer (Customer_ID, Name, Phone, Email) values ('2', 'Sonya', '+3753312332111', 'test2@mail.ru');   
+
+
+
+
+
+
+
+
+CREATE TABLE Product_photo (
+Photo_ID VARCHAR ( 255 ) unique NOT NULL, 
+Product_ID VARCHAR ( 255 ) unique NOT NULL,
+URL  VARCHAR ( 255 ) UNIQUE NOT null,
+CONSTRAINT Product_photo_FKEY FOREIGN KEY (Product_ID) REFERENCES Product (Product_ID)
+);
+
+insert into Product_photo (Photo_ID, Product_ID, URL) values (1, 1, 'guitar.com/acou');
+insert into Product_photo (Photo_ID, Product_ID, URL) values (2, 2, 'guitar.com/acou1');
+insert into Product_photo (Photo_ID, Product_ID, URL) values (3, 3, 'guitar.com/elec');
+insert into Product_photo (Photo_ID, Product_ID, URL) values (4, 4, 'guitar.com/elec1');
+insert into Product_photo (Photo_ID, Product_ID, URL) values (5, 5, 'guitar.com/bass');
+insert into Product_photo (Photo_ID, Product_ID, URL) values (6, 6, 'guitar.com/bass1');
+
+
+
+
+
+
+CREATE TABLE Product_summary (
+Summary_ID varchar ( 255 ) unique  NOT NULL, 
+TEXT varchar ( 2000 ) NOT NULL,
+Product_ID varchar ( 255 ) unique NOT null,
+CONSTRAINT Product_summary_FKEY FOREIGN KEY (Product_ID) REFERENCES Product (Product_ID)
+);
+insert into Product_summary (Summary_ID, text, Product_ID) values (1, 'somethingtext1', 1);
+insert into Product_summary (Summary_ID, text, Product_ID) values (2, 'somethingtext2', 2);
+insert into Product_summary (Summary_ID, text, Product_ID) values (3, 'somethingtext3', 3);
+insert into Product_summary (Summary_ID, text, Product_ID) values (4, 'somethingtext4', 4);
+insert into Product_summary (Summary_ID, text, Product_ID) values (5, 'somethingtext5', 5);
+insert into Product_summary (Summary_ID, text, Product_ID) values (6, 'somethingtext6', 6);
+
+
+
+
+
+CREATE TABLE Cart (
+Customer_ID varchar ( 255 ) unique NOT NULL, 
+Cart_ID varchar ( 255 ) unique NOT NULL, 
+CONSTRAINT Cart_PKEY PRIMARY KEY (Cart_ID),
+CONSTRAINT Customer_ID_FKEY FOREIGN KEY (Customer_ID) REFERENCES Customer (Customer_ID)
+);
+
+INSERT into Cart (Customer_ID, Cart_ID)  values ('1', '1');
+INSERT into Cart (Customer_ID, Cart_ID)  values ('2', '2');
+
+
+
+
+
+
+CREATE TABLE Cart_product (
+Product_ID varchar ( 255 ) unique NOT NULL, 
+Cart_ID varchar ( 255 ) unique NOT NULL, 
+CONSTRAINT Cart_ID FOREIGN KEY (Cart_ID) REFERENCES Cart (Cart_ID),
+CONSTRAINT Cart_product_FKEY FOREIGN KEY (Product_ID) REFERENCES Product (Product_ID)
+);
+
+insert into Cart_product (Product_ID, Cart_ID) values ('1', '1');
+insert into Cart_product (Product_ID, Cart_ID) values ('2', '2');
